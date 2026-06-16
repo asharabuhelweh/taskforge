@@ -32,10 +32,10 @@ const projectSchema = yup.object({
 type ProjectFormValues = yup.InferType<typeof projectSchema>;
 
 const ProjectCardSkeleton = () => (
-  <Card variant="outlined" sx={{ minHeight: 180, overflow: "hidden" }}>
+  <Card variant="outlined" sx={{ minHeight: "11.25rem", overflow: "hidden" }}>
     <CardContent sx={{ p: 3 }}>
-      <Skeleton variant="text" width="65%" height={30} />
-      <Skeleton variant="rounded" width={84} height={24} sx={{ mt: 1.5, mb: 2 }} />
+      <Skeleton variant="text" width="65%" height="1.875rem" />
+      <Skeleton variant="rounded" width="5.25rem" height="1.5rem" sx={{ mt: 1.5, mb: 2 }} />
       <Skeleton variant="text" width="95%" />
       <Skeleton variant="text" width="78%" />
     </CardContent>
@@ -135,9 +135,9 @@ export default function DashboardPage() {
               <Box
                 aria-hidden="true"
                 sx={{
-                  width: 56,
-                  height: 56,
-                  borderRadius: 3,
+                  width: "3.5rem",
+                  height: "3.5rem",
+                  borderRadius: "1rem",
                   display: "grid",
                   placeItems: "center",
                   mx: "auto",

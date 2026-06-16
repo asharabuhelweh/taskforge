@@ -27,7 +27,7 @@ const ProjectCardComponent = ({ project }: ProjectCardProps) => {
       variant="outlined"
       sx={{
         height: "100%",
-        minHeight: 180,
+        minHeight: "11.25rem",
         display: "flex",
         flexDirection: "column",
         overflow: "hidden",
@@ -37,11 +37,11 @@ const ProjectCardComponent = ({ project }: ProjectCardProps) => {
         "&:hover": {
           borderColor: "primary.main",
           boxShadow: 2,
-          transform: "translateY(-4px)",
+          transform: "translateY(-0.25rem)",
         },
         "&:hover .project-card-arrow": {
           opacity: 1,
-          transform: "translateX(2px)",
+          transform: "translateX(0.125rem)",
         },
       }}
     >
@@ -82,9 +82,9 @@ const ProjectCardComponent = ({ project }: ProjectCardProps) => {
               label={`${project.tasks.length}`}
               size="small"
               sx={{
-                height: 24,
-                minWidth: 32,
-                borderRadius: 999,
+                height: "1.5rem",
+                minWidth: "2rem",
+                borderRadius: "62.4375rem",
                 bgcolor: "rgba(37, 99, 235, 0.1)",
                 color: "primary.main",
                 fontSize: "0.75rem",
@@ -125,7 +125,7 @@ const ProjectCardComponent = ({ project }: ProjectCardProps) => {
               className="project-card-arrow"
               sx={{
                 color: "primary.main",
-                fontSize: 20,
+                fontSize: "1.25rem",
                 opacity: 0,
                 transform: "translateX(0)",
                 transition: "opacity 0.2s ease, transform 0.2s ease",

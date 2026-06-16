@@ -107,7 +107,7 @@ const LoginPage = () => {
             overflow: "hidden",
             bgcolor: "#FFFFFF",
             borderColor: "#E2E8F0",
-            filter: "blur(2px)",
+            filter: "blur(0.125rem)",
             transform: "scale(1.01)",
           }}
         >
@@ -156,9 +156,9 @@ const LoginPage = () => {
             <Box
               sx={{
                 display: "grid",
-                gridTemplateColumns: "repeat(3, minmax(220px, 1fr))",
+                gridTemplateColumns: "repeat(3, minmax(13.75rem, 1fr))",
                 gap: 2,
-                minWidth: 760,
+                minWidth: "47.5rem",
               }}
             >
               {taskColumns.map((column) => (
@@ -219,7 +219,7 @@ const LoginPage = () => {
           position: "relative",
           zIndex: 1,
           width: "100%",
-          maxWidth: 1180,
+          maxWidth: "73.75rem",
           display: "grid",
           gridTemplateColumns: { xs: "1fr", md: "55fr 45fr" },
           alignItems: "center",
@@ -231,13 +231,13 @@ const LoginPage = () => {
           variant="outlined"
           sx={{
             width: "100%",
-            maxWidth: 480,
+            maxWidth: "30rem",
             justifySelf: { xs: "center", md: "start" },
-            borderRadius: 4,
+            borderRadius: "1rem",
             borderColor: "rgba(226, 232, 240, 0.9)",
             bgcolor: "rgba(255, 255, 255, 0.92)",
-            backdropFilter: "blur(12px)",
-            boxShadow: "0 24px 48px rgba(15, 23, 42, 0.16)",
+            backdropFilter: "blur(0.75rem)",
+            boxShadow: "0 1.5rem 3rem rgba(15, 23, 42, 0.16)",
           }}
         >
           <CardContent sx={{ p: { xs: 4, sm: 5 } }}>
@@ -245,16 +245,16 @@ const LoginPage = () => {
               <Box
                 aria-hidden="true"
                 sx={{
-                  width: 42,
-                  height: 42,
-                  borderRadius: 2,
+                  width: "2.625rem",
+                  height: "2.625rem",
+                  borderRadius: "0.75rem",
                   display: "grid",
                   placeItems: "center",
                   bgcolor: "#2563EB",
                   color: "#FFFFFF",
                   fontWeight: 800,
                   fontSize: "1rem",
-                  boxShadow: "0 10px 20px rgba(37, 99, 235, 0.28)",
+                  boxShadow: "0 0.625rem 1.25rem rgba(37, 99, 235, 0.28)",
                 }}
               >
                 TF
@@ -272,7 +272,7 @@ const LoginPage = () => {
             <Stack spacing={1} sx={{ mb: 3 }}>
               {features.map((feature) => (
                 <Stack key={feature} direction="row" alignItems="center" spacing={1}>
-                  <CheckCircleIcon sx={{ color: "#2563EB", fontSize: 18 }} />
+                  <CheckCircleIcon sx={{ color: "#2563EB", fontSize: "1.125rem" }} />
                   <Typography variant="body2" sx={{ color: "#0F172A" }}>
                     {feature}
                   </Typography>

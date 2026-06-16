@@ -38,7 +38,7 @@ export const Layout = () => {
           borderColor: "divider",
         }}
       >
-        <Toolbar sx={{ minHeight: 64, px: { xs: 2, sm: 3, md: 4 } }}>
+        <Toolbar sx={{ minHeight: "4rem", px: { xs: 2, sm: 3, md: 4 } }}>
           <Box
             component={Link}
             to="/dashboard"
@@ -54,16 +54,16 @@ export const Layout = () => {
             <Box
               aria-hidden="true"
               sx={{
-                width: 34,
-                height: 34,
-                borderRadius: 2,
+                width: "2.125rem",
+                height: "2.125rem",
+                borderRadius: "0.75rem",
                 display: "grid",
                 placeItems: "center",
                 bgcolor: "primary.main",
                 color: "primary.contrastText",
                 fontWeight: 800,
                 fontSize: "0.9rem",
-                boxShadow: "0 8px 18px rgba(37, 99, 235, 0.25)",
+                boxShadow: "0 0.5rem 1.125rem rgba(37, 99, 235, 0.25)",
               }}
             >
               TF
@@ -117,8 +117,8 @@ export const Layout = () => {
           bgcolor: "background.default",
           backgroundImage: (theme) =>
             theme.palette.mode === "light"
-              ? "linear-gradient(180deg, rgba(37, 99, 235, 0.04), rgba(248, 250, 252, 0) 260px)"
-              : "linear-gradient(180deg, rgba(96, 165, 250, 0.08), rgba(15, 23, 42, 0) 260px)",
+              ? "linear-gradient(180deg, rgba(37, 99, 235, 0.04), rgba(248, 250, 252, 0) 16.25rem)"
+              : "linear-gradient(180deg, rgba(96, 165, 250, 0.08), rgba(15, 23, 42, 0) 16.25rem)",
         }}
       >
         <Outlet />

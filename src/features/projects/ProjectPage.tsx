@@ -50,12 +50,12 @@ const TaskSkeleton = () => (
       }}
     >
       <Box sx={{ flexGrow: 1 }}>
-        <Skeleton variant="text" width="50%" height={28} />
+        <Skeleton variant="text" width="50%" height="1.75rem" />
         <Skeleton variant="text" width="30%" />
       </Box>
       <Box sx={{ display: "flex", gap: 2 }}>
-        <Skeleton variant="rectangular" width={70} height={24} sx={{ borderRadius: 999 }} />
-        <Skeleton variant="circular" width={30} height={30} />
+        <Skeleton variant="rectangular" width="4.375rem" height="1.5rem" sx={{ borderRadius: "62.4375rem" }} />
+        <Skeleton variant="circular" width="1.875rem" height="1.875rem" />
       </Box>
     </CardContent>
   </Card>
@@ -229,7 +229,7 @@ export default function ProjectPage() {
               onChange={(e) =>
                 setFilterStatus(e.target.value as "all" | Task["status"])
               }
-              sx={{ minWidth: { xs: "100%", sm: 180 } }}
+              sx={{ minWidth: { xs: "100%", sm: "11.25rem" } }}
             >
               <MenuItem value="all">All</MenuItem>
               <MenuItem value="todo">To Do</MenuItem>
@@ -243,7 +243,7 @@ export default function ProjectPage() {
               label="Sort Due Date"
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value as "asc" | "desc")}
-              sx={{ minWidth: { xs: "100%", sm: 180 } }}
+              sx={{ minWidth: { xs: "100%", sm: "11.25rem" } }}
             >
               <MenuItem value="asc">Earliest First</MenuItem>
               <MenuItem value="desc">Latest First</MenuItem>

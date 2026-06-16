@@ -43,13 +43,13 @@ const TaskListItemComponent = ({ task, onEdit }: TaskListItemProps) => {
       variant="outlined"
       sx={{
         mb: 2,
-        borderLeft: 4,
+        borderLeft: "0.25rem solid",
         borderLeftColor: statusAccent[task.status],
         bgcolor: "background.paper",
         borderColor: "divider",
         "&:hover": {
           boxShadow: 2,
-          transform: "translateY(-2px)",
+          transform: "translateY(-0.125rem)",
         },
       }}
     >

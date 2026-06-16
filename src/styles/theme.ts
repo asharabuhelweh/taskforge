@@ -25,10 +25,10 @@ const palette = {
 
 const elevations = {
   none: "none",
-  sm: "0 1px 2px rgba(15, 23, 42, 0.05)",
-  md: "0 4px 12px rgba(15, 23, 42, 0.08)",
-  lg: "0 12px 24px rgba(15, 23, 42, 0.12)",
-  xl: "0 20px 40px rgba(15, 23, 42, 0.16)",
+  sm: "0 0.0625rem 0.125rem rgba(15, 23, 42, 0.05)",
+  md: "0 0.25rem 0.75rem rgba(15, 23, 42, 0.08)",
+  lg: "0 0.75rem 1.5rem rgba(15, 23, 42, 0.12)",
+  xl: "0 1.25rem 2.5rem rgba(15, 23, 42, 0.16)",
 };
 
 export const lightTheme = createTheme({
@@ -60,11 +60,11 @@ export const lightTheme = createTheme({
     fontFamily: '"Inter", "Roboto", "Arial", sans-serif',
     h4: {
       fontWeight: 700,
-      letterSpacing: "-0.01em",
+      letterSpacing: "-0.01rem",
     },
     h5: {
       fontWeight: 700,
-      letterSpacing: "-0.005em",
+      letterSpacing: "-0.005rem",
     },
     h6: {
       fontWeight: 600,
@@ -79,7 +79,7 @@ export const lightTheme = createTheme({
     button: {
       textTransform: "none",
       fontWeight: 600,
-      letterSpacing: "0.01em",
+      letterSpacing: "0.01rem",
     },
   },
 
@@ -101,38 +101,38 @@ export const lightTheme = createTheme({
       },
       styleOverrides: {
         root: {
-          borderRadius: 12,
+          borderRadius: "0.75rem",
           fontWeight: 600,
           transition: "all 0.2s ease",
         },
         sizeLarge: {
-          height: 48,
+          height: "3rem",
           fontSize: "1rem",
-          padding: "12px 24px",
+          padding: "0.75rem 1.5rem",
         },
         sizeMedium: {
-          height: 40,
-          padding: "8px 16px",
+          height: "2.5rem",
+          padding: "0.5rem 1rem",
         },
         sizeSmall: {
-          height: 32,
-          padding: "6px 12px",
+          height: "2rem",
+          padding: "0.375rem 0.75rem",
           fontSize: "0.875rem",
         },
         contained: {
           boxShadow: elevations.md,
           "&:hover": {
             boxShadow: elevations.lg,
-            transform: "translateY(-1px)",
+            transform: "translateY(-0.0625rem)",
           },
           "&:active": {
             transform: "translateY(0)",
           },
         },
         outlined: {
-          borderWidth: 1.5,
+          borderWidth: "0.09375rem",
           "&:hover": {
-            borderWidth: 1.5,
+            borderWidth: "0.09375rem",
           },
         },
       },
@@ -142,10 +142,10 @@ export const lightTheme = createTheme({
       styleOverrides: {
         root: {
           fontWeight: 600,
-          borderRadius: 999,
+          borderRadius: "62.4375rem",
         },
         sizeSmall: {
-          height: 24,
+          height: "1.5rem",
           fontSize: "0.75rem",
         },
       },
@@ -155,7 +155,7 @@ export const lightTheme = createTheme({
       styleOverrides: {
         root: {
           "& .MuiOutlinedInput-root": {
-            borderRadius: 12,
+            borderRadius: "0.75rem",
             backgroundColor: palette.light.bgPaper,
             transition: "border-color 0.2s ease, box-shadow 0.2s ease",
             "&:hover": {
@@ -164,7 +164,7 @@ export const lightTheme = createTheme({
               },
             },
             "&.Mui-focused": {
-              boxShadow: `0 0 0 3px ${alpha(palette.light.primary, 0.1)}`,
+              boxShadow: `0 0 0 0.1875rem ${alpha(palette.light.primary, 0.1)}`,
             },
           },
         },
@@ -174,7 +174,7 @@ export const lightTheme = createTheme({
     MuiDialog: {
       styleOverrides: {
         paper: {
-          borderRadius: 16,
+          borderRadius: "1rem",
           boxShadow: elevations.xl,
         },
       },
@@ -185,7 +185,7 @@ export const lightTheme = createTheme({
         root: {
           fontSize: "1.25rem",
           fontWeight: 700,
-          padding: "24px 24px 12px",
+          padding: "1.5rem 1.5rem 0.75rem",
         },
       },
     },
@@ -193,7 +193,7 @@ export const lightTheme = createTheme({
     MuiDialogContent: {
       styleOverrides: {
         root: {
-          padding: "12px 24px",
+          padding: "0.75rem 1.5rem",
         },
       },
     },
@@ -201,8 +201,8 @@ export const lightTheme = createTheme({
     MuiDialogActions: {
       styleOverrides: {
         root: {
-          padding: "16px 24px 24px",
-          gap: 12,
+          padding: "1rem 1.5rem 1.5rem",
+          gap: "0.75rem",
         },
       },
     },
@@ -246,11 +246,11 @@ export const darkTheme = createTheme({
     fontFamily: '"Inter", "Roboto", "Arial", sans-serif',
     h4: {
       fontWeight: 700,
-      letterSpacing: "-0.01em",
+      letterSpacing: "-0.01rem",
     },
     h5: {
       fontWeight: 700,
-      letterSpacing: "-0.005em",
+      letterSpacing: "-0.005rem",
     },
     h6: {
       fontWeight: 600,
@@ -265,7 +265,7 @@ export const darkTheme = createTheme({
     button: {
       textTransform: "none",
       fontWeight: 600,
-      letterSpacing: "0.01em",
+      letterSpacing: "0.01rem",
     },
   },
 
@@ -274,7 +274,7 @@ export const darkTheme = createTheme({
       styleOverrides: {
         root: {
           borderColor: palette.dark.border,
-          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
+          boxShadow: "0 0.25rem 0.75rem rgba(0, 0, 0, 0.3)",
           transition:
             "box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
         },
@@ -287,38 +287,38 @@ export const darkTheme = createTheme({
       },
       styleOverrides: {
         root: {
-          borderRadius: 12,
+          borderRadius: "0.75rem",
           fontWeight: 600,
           transition: "all 0.2s ease",
         },
         sizeLarge: {
-          height: 48,
+          height: "3rem",
           fontSize: "1rem",
-          padding: "12px 24px",
+          padding: "0.75rem 1.5rem",
         },
         sizeMedium: {
-          height: 40,
-          padding: "8px 16px",
+          height: "2.5rem",
+          padding: "0.5rem 1rem",
         },
         sizeSmall: {
-          height: 32,
-          padding: "6px 12px",
+          height: "2rem",
+          padding: "0.375rem 0.75rem",
           fontSize: "0.875rem",
         },
         contained: {
-          boxShadow: "0 4px 12px rgba(96, 165, 250, 0.3)",
+          boxShadow: "0 0.25rem 0.75rem rgba(96, 165, 250, 0.3)",
           "&:hover": {
-            boxShadow: "0 8px 16px rgba(96, 165, 250, 0.4)",
-            transform: "translateY(-1px)",
+            boxShadow: "0 0.5rem 1rem rgba(96, 165, 250, 0.4)",
+            transform: "translateY(-0.0625rem)",
           },
           "&:active": {
             transform: "translateY(0)",
           },
         },
         outlined: {
-          borderWidth: 1.5,
+          borderWidth: "0.09375rem",
           "&:hover": {
-            borderWidth: 1.5,
+            borderWidth: "0.09375rem",
           },
         },
       },
@@ -328,10 +328,10 @@ export const darkTheme = createTheme({
       styleOverrides: {
         root: {
           fontWeight: 600,
-          borderRadius: 999,
+          borderRadius: "62.4375rem",
         },
         sizeSmall: {
-          height: 24,
+          height: "1.5rem",
           fontSize: "0.75rem",
         },
       },
@@ -341,7 +341,7 @@ export const darkTheme = createTheme({
       styleOverrides: {
         root: {
           "& .MuiOutlinedInput-root": {
-            borderRadius: 12,
+            borderRadius: "0.75rem",
             backgroundColor: palette.dark.bgPaper,
             transition: "border-color 0.2s ease, box-shadow 0.2s ease",
             "&:hover": {
@@ -350,7 +350,7 @@ export const darkTheme = createTheme({
               },
             },
             "&.Mui-focused": {
-              boxShadow: `0 0 0 3px ${alpha(palette.dark.primary, 0.2)}`,
+              boxShadow: `0 0 0 0.1875rem ${alpha(palette.dark.primary, 0.2)}`,
             },
           },
         },
@@ -360,8 +360,8 @@ export const darkTheme = createTheme({
     MuiDialog: {
       styleOverrides: {
         paper: {
-          borderRadius: 16,
-          boxShadow: "0 20px 40px rgba(0, 0, 0, 0.5)",
+          borderRadius: "1rem",
+          boxShadow: "0 1.25rem 2.5rem rgba(0, 0, 0, 0.5)",
         },
       },
     },
@@ -371,7 +371,7 @@ export const darkTheme = createTheme({
         root: {
           fontSize: "1.25rem",
           fontWeight: 700,
-          padding: "24px 24px 12px",
+          padding: "1.5rem 1.5rem 0.75rem",
         },
       },
     },
@@ -379,7 +379,7 @@ export const darkTheme = createTheme({
     MuiDialogContent: {
       styleOverrides: {
         root: {
-          padding: "12px 24px",
+          padding: "0.75rem 1.5rem",
         },
       },
     },
@@ -387,8 +387,8 @@ export const darkTheme = createTheme({
     MuiDialogActions: {
       styleOverrides: {
         root: {
-          padding: "16px 24px 24px",
-          gap: 12,
+          padding: "1rem 1.5rem 1.5rem",
+          gap: "0.75rem",
         },
       },
     },
