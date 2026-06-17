@@ -1,4 +1,3 @@
-// Loads data from localStorage. Returns the parsed value, or the fallback if nothing is saved.
 export const loadFromStorage = <T>(key: string, fallback: T): T => {
   try {
     const saved = localStorage.getItem(key);
@@ -11,7 +10,6 @@ export const loadFromStorage = <T>(key: string, fallback: T): T => {
   }
 };
 
-// Saves data to localStorage as a JSON string.
 export const saveToStorage = <T>(key: string, value: T): void => {
   try {
     localStorage.setItem(key, JSON.stringify(value));
@@ -20,7 +18,10 @@ export const saveToStorage = <T>(key: string, value: T): void => {
   }
 };
 
-// Removes a key from localStorage.
 export const removeFromStorage = (key: string): void => {
+  try {
     localStorage.removeItem(key);
+  } catch {
+    // If storage is unavailable, there is nothing persisted to remove.
+  }
 };
