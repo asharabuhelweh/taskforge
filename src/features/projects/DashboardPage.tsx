@@ -40,7 +40,7 @@ const ProjectCardSkeleton = () => (
       <Skeleton variant="text" width="78%" />
     </CardContent>
   </Card>
-);
+);                            
 
 export default function DashboardPage() {
   const projects = useProjectStore((state) => state.projects);

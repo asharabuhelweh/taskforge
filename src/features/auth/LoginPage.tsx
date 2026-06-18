@@ -101,7 +101,10 @@ const LoginPage = () => {
             width: { xs: "calc(100% - 32px)", sm: "100%" },
             maxWidth: "30rem",
             justifySelf: { xs: "center", md: "start" },
-            transform: { md: "translateX(-3.5rem)", lg: "translateX(-3.75rem)" },
+            transform: {
+              md: "translateX(-3.5rem)",
+              lg: "translateX(-3.75rem)",
+            },
             borderRadius: "1.25rem",
             borderColor: "rgba(226, 232, 240, 0.9)",
             background: "rgba(255, 255, 255, 0.92)",
@@ -112,7 +115,9 @@ const LoginPage = () => {
           }}
         >
           <CardContent sx={{ p: { xs: 3, sm: 4 } }}>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 1 }}>
+            <Box
+              sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 1 }}
+            >
               <Box
                 aria-hidden="true"
                 sx={{
@@ -130,7 +135,11 @@ const LoginPage = () => {
               >
                 TF
               </Box>
-              <Typography variant="h4" component="h1" sx={{ color: "#0F172A", fontWeight: 700 }}>
+              <Typography
+                variant="h4"
+                component="h1"
+                sx={{ color: "#0F172A", fontWeight: 700 }}
+              >
                 TaskForge
               </Typography>
             </Box>
@@ -193,8 +202,15 @@ const LoginPage = () => {
 
             <Stack spacing={0.5} sx={{ mt: 2.5 }}>
               {features.map((feature) => (
-                <Stack key={feature} direction="row" alignItems="center" spacing={0.75}>
-                  <CheckCircleIcon sx={{ color: "#94A3B8", fontSize: "1rem" }} />
+                <Stack
+                  key={feature}
+                  direction="row"
+                  alignItems="center"
+                  spacing={0.75}
+                >
+                  <CheckCircleIcon
+                    sx={{ color: "#94A3B8", fontSize: "1rem" }}
+                  />
                   <Typography
                     variant="body2"
                     sx={{ color: "#64748B", fontSize: "0.8125rem" }}

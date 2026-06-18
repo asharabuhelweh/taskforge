@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -38,6 +39,20 @@ const taskSchema = yup.object({
 });
 
 type TaskFormValues = yup.InferType<typeof taskSchema>;
+
+type DeleteTarget =
+  | {
+      type: "project";
+      id: string;
+      title: string;
+      taskCount: number;
+    }
+  | {
+      type: "task";
+      id: string;
+      projectId: string;
+      title: string;
+    };
 
 const TaskSkeleton = () => (
   <Card variant="outlined" sx={{ mb: 2 }}>
@@ -67,6 +82,8 @@ export default function ProjectPage() {
   const projects = useProjectStore((state) => state.projects);
   const addTask = useProjectStore((state) => state.addTask);
   const updateTask = useProjectStore((state) => state.updateTask);
+  const deleteProject = useProjectStore((state) => state.deleteProject);
+  const deleteTask = useProjectStore((state) => state.deleteTask);
 
   const project = projects.find((p) => p.id === id);
 
@@ -75,6 +92,7 @@ export default function ProjectPage() {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<DeleteTarget | null>(null);
 
   const {
     register,
@@ -105,6 +123,17 @@ export default function ProjectPage() {
 
   const handleBack = useCallback(() => navigate("/dashboard"), [navigate]);
 
+  const handleDeleteProject = useCallback(() => {
+    if (!project) return;
+
+    setDeleteTarget({
+      type: "project",
+      id: project.id,
+      title: project.title,
+      taskCount: project.tasks.length,
+    });
+  }, [project]);
+
   const handleOpenNew = useCallback(() => {
     setEditingTask(null);
     reset({ title: "", status: "todo", dueDate: "" });
@@ -121,6 +150,38 @@ export default function ProjectPage() {
   );
 
   const handleClose = useCallback(() => setIsModalOpen(false), []);
+
+  const handleDeleteTask = useCallback(
+    (task: Task) => {
+      if (!id) return;
+
+      setDeleteTarget({
+        type: "task",
+        id: task.id,
+        projectId: id,
+        title: task.title,
+      });
+    },
+    [id],
+  );
+
+  const handleCloseDeleteDialog = useCallback(() => {
+    setDeleteTarget(null);
+  }, []);
+
+  const handleConfirmDelete = useCallback(() => {
+    if (!deleteTarget) return;
+
+    if (deleteTarget.type === "project") {
+      deleteProject(deleteTarget.id);
+      setDeleteTarget(null);
+      navigate("/dashboard");
+      return;
+    }
+
+    deleteTask(deleteTarget.projectId, deleteTarget.id);
+    setDeleteTarget(null);
+  }, [deleteProject, deleteTarget, deleteTask, navigate]);
 
   const onSubmit = useCallback(
     (values: TaskFormValues) => {
@@ -195,18 +256,41 @@ export default function ProjectPage() {
                 {project.description}
               </Typography>
             </Box>
-            <Button
-              variant="contained"
-              startIcon={<AddIcon />}
-              onClick={handleOpenNew}
-              size="large"
+            <Stack
+              direction="row"
+              spacing={1}
               sx={{
                 alignSelf: { xs: "stretch", sm: "center" },
-                px: 3,
+                alignItems: "center",
               }}
             >
-              New Task
-            </Button>
+              <Button
+                variant="contained"
+                startIcon={<AddIcon />}
+                onClick={handleOpenNew}
+                size="large"
+                sx={{
+                  flexGrow: { xs: 1, sm: 0 },
+                  px: 3,
+                }}
+              >
+                New Task
+              </Button>
+              <Button
+                variant="contained"
+                color="error"
+                startIcon={<DeleteOutlineIcon />}
+                onClick={handleDeleteProject}
+                size="large"
+                sx={{
+                  flexGrow: { xs: 1, sm: 0 },
+                  minWidth: { xs: 0, sm: "7.25rem" },
+                  px: 2.5,
+                }}
+              >
+                Delete
+              </Button>
+            </Stack>
           </CardContent>
         </Card>
 
@@ -264,7 +348,12 @@ export default function ProjectPage() {
           </Card>
         ) : (
           displayedTasks.map((task) => (
-            <TaskListItem key={task.id} task={task} onEdit={handleOpenEdit} />
+            <TaskListItem
+              key={task.id}
+              task={task}
+              onEdit={handleOpenEdit}
+              onDelete={handleDeleteTask}
+            />
           ))
         )}
 
@@ -311,6 +400,48 @@ export default function ProjectPage() {
               </Button>
             </DialogActions>
           </form>
+        </Dialog>
+
+        <Dialog
+          open={!!deleteTarget}
+          onClose={handleCloseDeleteDialog}
+          fullWidth
+          maxWidth="xs"
+        >
+          <DialogTitle
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              pb: 1,
+            }}
+          >
+            {deleteTarget?.type === "project" ? "Delete project" : "Delete task"}
+          </DialogTitle>
+          <DialogContent>
+            <Typography sx={{ color: "text.primary", fontWeight: 600 }}>
+              {deleteTarget?.type === "project"
+                ? `Delete "${deleteTarget.title}" and its ${
+                    deleteTarget.taskCount === 1
+                      ? "1 task"
+                      : `${deleteTarget.taskCount} tasks`
+                  }?`
+                : `Delete "${deleteTarget?.title}"?`}
+            </Typography>
+            <Typography color="text.secondary" sx={{ mt: 1 }}>
+              This action cannot be undone.
+            </Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
+            <Button
+              onClick={handleConfirmDelete}
+              variant="contained"
+              color="error"
+              sx={{ px: 2.5 }}
+            >
+              Delete
+            </Button>
+          </DialogActions>
         </Dialog>
       </Box>
     </PageContainer>

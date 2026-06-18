@@ -6,13 +6,16 @@ import {
   Chip,
   Box,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { type Task } from "../types/domain";
 
 interface TaskListItemProps {
   task: Task;
   onEdit: (task: Task) => void;
+  onDelete: (task: Task) => void;
 }
 
 const statusColors: Record<Task["status"], "default" | "primary" | "success"> = {
@@ -33,10 +36,14 @@ const statusAccent: Record<Task["status"], string> = {
   done: "success.main",
 };
 
-const TaskListItemComponent = ({ task, onEdit }: TaskListItemProps) => {
+const TaskListItemComponent = ({ task, onEdit, onDelete }: TaskListItemProps) => {
   const handleEdit = useCallback(() => {
     onEdit(task);
   }, [onEdit, task]);
+
+  const handleDelete = useCallback(() => {
+    onDelete(task);
+  }, [onDelete, task]);
 
   return (
     <Card
@@ -96,14 +103,35 @@ const TaskListItemComponent = ({ task, onEdit }: TaskListItemProps) => {
             size="small"
             sx={{ fontWeight: 600 }}
           />
-          <IconButton
-            onClick={handleEdit}
-            size="small"
-            color="primary"
-            aria-label="edit task"
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 0.5,
+              ml: { xs: "auto", sm: 0 },
+            }}
           >
-            <EditIcon fontSize="small" />
-          </IconButton>
+            <Tooltip title="Edit task">
+              <IconButton
+                onClick={handleEdit}
+                size="small"
+                color="primary"
+                aria-label={`edit ${task.title}`}
+              >
+                <EditIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Delete task">
+              <IconButton
+                onClick={handleDelete}
+                size="small"
+                color="error"
+                aria-label={`delete ${task.title}`}
+              >
+                <DeleteOutlineIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          </Box>
         </Box>
       </CardContent>
     </Card>

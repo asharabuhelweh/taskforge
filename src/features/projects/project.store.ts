@@ -6,8 +6,10 @@ import { seedProjects } from "../../utils/seed.ts";
 interface ProjectState {
   projects: Project[];
   addProject: (title: string, description: string) => void;
+  deleteProject: (projectId: string) => void;
   addTask: (projectId: string, title: string, status: Task["status"], dueDate: string) => void;
   updateTask: (projectId: string, taskId: string, title: string, status: Task["status"], dueDate: string) => void;
+  deleteTask: (projectId: string, taskId: string) => void;
 }
 
 const PROJECTS_KEY = "taskforge_projects";
@@ -24,6 +26,14 @@ export const useProjectStore = create<ProjectState>((set) => ({
         tasks: [],
       };
       const updated = [...state.projects, newProject];
+      saveToStorage(PROJECTS_KEY, updated);
+      return { projects: updated };
+    });
+  },
+
+  deleteProject: (projectId) => {
+    set((state) => {
+      const updated = state.projects.filter((project) => project.id !== projectId);
       saveToStorage(PROJECTS_KEY, updated);
       return { projects: updated };
     });
@@ -55,6 +65,20 @@ export const useProjectStore = create<ProjectState>((set) => ({
           return { ...task, title, status, dueDate };
         });
         return { ...project, tasks: updatedTasks };
+      });
+      saveToStorage(PROJECTS_KEY, updated);
+      return { projects: updated };
+    });
+  },
+
+  deleteTask: (projectId, taskId) => {
+    set((state) => {
+      const updated = state.projects.map((project) => {
+        if (project.id !== projectId) return project;
+        return {
+          ...project,
+          tasks: project.tasks.filter((task) => task.id !== taskId),
+        };
       });
       saveToStorage(PROJECTS_KEY, updated);
       return { projects: updated };
