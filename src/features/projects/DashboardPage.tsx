@@ -21,7 +21,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useProjectStore } from "./project.store";
 import { ProjectCard } from "../../components/ProjectCard";
-import { fetchProjects } from "../../utils/api";
 import { PageContainer } from "../../styles/styled";
 
 const projectSchema = yup.object({
@@ -44,6 +43,7 @@ const ProjectCardSkeleton = () => (
 
 export default function DashboardPage() {
   const projects = useProjectStore((state) => state.projects);
+  const loadProjects = useProjectStore((state) => state.loadProjects);
   const addProject = useProjectStore((state) => state.addProject);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -59,8 +59,18 @@ export default function DashboardPage() {
   });
 
   useEffect(() => {
-    fetchProjects().then(() => setIsLoading(false));
-  }, []);
+    let isMounted = true;
+
+    loadProjects().finally(() => {
+      if (isMounted) {
+        setIsLoading(false);
+      }
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [loadProjects]);
 
   const handleOpen = useCallback(() => setIsModalOpen(true), []);
 
@@ -70,8 +80,8 @@ export default function DashboardPage() {
   }, [reset]);
 
   const onSubmit = useCallback(
-    (values: ProjectFormValues) => {
-      addProject(values.title, values.description);
+    async (values: ProjectFormValues) => {
+      await addProject(values.title, values.description);
       handleClose();
     },
     [addProject, handleClose],

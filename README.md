@@ -6,6 +6,8 @@ A task and project management app built with React and TypeScript.
 
 ```bash
 npm install
+npm --prefix server install
+npm run dev:server
 npm run dev
 ```
 
@@ -13,7 +15,17 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 **Login credentials:**
 - Email: `admin@test.com`
-- Password: `22334455`
+- Password: `123456`
+
+## Backend
+
+TaskForge now includes a TypeScript Express API in `server/`.
+
+```bash
+npm run dev:server
+```
+
+See [Backend Migration](docs/backend-migration.md) for the API architecture, database schema, deployment plan, and Zustand migration details.
 
 ## Features
 
@@ -21,7 +33,7 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 - **Dashboard** — Displays all projects as cards. Add new projects via a modal form.
 - **Project Page** — View all tasks inside a project. Filter by status, sort by due date, and create or edit tasks.
 - **Theme Switching** — Toggle between light and dark mode from the navigation bar. Preference is saved.
-- **Data Persistence** — Projects, tasks, session, and theme are all saved to localStorage.
+- **Data Persistence** — Projects and tasks are saved through the backend API. Theme preference is saved to localStorage.
 - **Loading States** — Skeleton screens are shown while data loads on the Dashboard and Project pages.
 - **Error States** — Validation errors shown inline on all forms. Empty state messages when no data exists.
 - **Protected Routes** — Dashboard and Project pages are inaccessible without logging in.
@@ -52,7 +64,7 @@ src/
 ├── types/
 │   └── domain.ts           # TypeScript interfaces for Project and Task
 ├── utils/
-│   ├── api.ts              # Mock async data fetching with simulated delay
+│   ├── api.ts              # REST API client
 │   ├── persist.ts          # localStorage read/write/remove helpers
 │   └── seed.ts             # Default project data loaded on first run
 ├── App.tsx                 # Route definitions with lazy loading and Suspense

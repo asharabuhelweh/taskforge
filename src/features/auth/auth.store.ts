@@ -1,29 +1,35 @@
 import { create } from "zustand";
-import { loadFromStorage, saveToStorage, removeFromStorage } from "../../utils/persist.ts";
+import {
+  getAuthToken,
+  removeAuthToken,
+  saveAuthToken,
+} from "../../utils/authToken";
+import { loginRequest } from "../../utils/api";
 
 interface AuthState {
   isAuthenticated: boolean;
-  login: (email: string, password: string) => boolean;
+  login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
 }
 
-const SESSION_KEY = "taskforge_session";
-
 export const useAuthStore = create<AuthState>((set) => ({
-  isAuthenticated: loadFromStorage<boolean>(SESSION_KEY, false),
+  isAuthenticated: Boolean(getAuthToken()),
 
-  login: (email, password) => {
-    if (email !== "admin@test.com" || password !== "22334455") {
+  login: async (email, password) => {
+    try {
+      const { token } = await loginRequest(email, password);
+      saveAuthToken(token);
+      set({ isAuthenticated: true });
+      return true;
+    } catch {
+      removeAuthToken();
+      set({ isAuthenticated: false });
       return false;
     }
-
-    saveToStorage(SESSION_KEY, true);
-    set({ isAuthenticated: true });
-    return true;
   },
 
   logout: () => {
-    removeFromStorage(SESSION_KEY);
+    removeAuthToken();
     set({ isAuthenticated: false });
   },
 }));

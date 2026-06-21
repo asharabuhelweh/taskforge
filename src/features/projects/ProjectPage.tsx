@@ -26,7 +26,6 @@ import * as yup from "yup";
 import { useProjectStore } from "./project.store";
 import { TaskListItem } from "../../components/TaskListItem";
 import { type Task } from "../../types/domain";
-import { fetchProjects } from "../../utils/api";
 import { PageContainer } from "../../styles/styled";
 
 const taskSchema = yup.object({
@@ -80,6 +79,7 @@ export default function ProjectPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const projects = useProjectStore((state) => state.projects);
+  const loadProjects = useProjectStore((state) => state.loadProjects);
   const addTask = useProjectStore((state) => state.addTask);
   const updateTask = useProjectStore((state) => state.updateTask);
   const deleteProject = useProjectStore((state) => state.deleteProject);
@@ -105,8 +105,18 @@ export default function ProjectPage() {
   });
 
   useEffect(() => {
-    fetchProjects().then(() => setIsLoading(false));
-  }, []);
+    let isMounted = true;
+
+    loadProjects().finally(() => {
+      if (isMounted) {
+        setIsLoading(false);
+      }
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [loadProjects]);
 
   const displayedTasks = useMemo(() => {
     if (!project) return [];
@@ -169,25 +179,25 @@ export default function ProjectPage() {
     setDeleteTarget(null);
   }, []);
 
-  const handleConfirmDelete = useCallback(() => {
+  const handleConfirmDelete = useCallback(async () => {
     if (!deleteTarget) return;
 
     if (deleteTarget.type === "project") {
-      deleteProject(deleteTarget.id);
+      await deleteProject(deleteTarget.id);
       setDeleteTarget(null);
       navigate("/dashboard");
       return;
     }
 
-    deleteTask(deleteTarget.projectId, deleteTarget.id);
+    await deleteTask(deleteTarget.projectId, deleteTarget.id);
     setDeleteTarget(null);
   }, [deleteProject, deleteTarget, deleteTask, navigate]);
 
   const onSubmit = useCallback(
-    (values: TaskFormValues) => {
+    async (values: TaskFormValues) => {
       if (!project) return;
       if (editingTask) {
-        updateTask(
+        await updateTask(
           project.id,
           editingTask.id,
           values.title,
@@ -195,12 +205,30 @@ export default function ProjectPage() {
           values.dueDate,
         );
       } else {
-        addTask(project.id, values.title, values.status, values.dueDate);
+        await addTask(project.id, values.title, values.status, values.dueDate);
       }
       handleClose();
     },
     [addTask, editingTask, handleClose, project, updateTask],
   );
+
+  if (isLoading && !project) {
+    return (
+      <PageContainer>
+        <Box sx={{ px: { xs: 2, sm: 3, md: 4 }, py: 3 }}>
+          <Card variant="outlined" sx={{ mb: 3 }}>
+            <CardContent sx={{ p: 3 }}>
+              <Skeleton variant="text" width="40%" height="2rem" />
+              <Skeleton variant="text" width="65%" />
+            </CardContent>
+          </Card>
+          {[1, 2, 3].map((n) => (
+            <TaskSkeleton key={n} />
+          ))}
+        </Box>
+      </PageContainer>
+    );
+  }
 
   if (!project) {
     return (

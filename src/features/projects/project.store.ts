@@ -1,87 +1,125 @@
 import { create } from "zustand";
 import { type Project, type Task } from "../../types/domain.ts";
-import { loadFromStorage, saveToStorage } from "../../utils/persist.ts";
-import { seedProjects } from "../../utils/seed.ts";
+import {
+  createProject as createProjectRequest,
+  createTask as createTaskRequest,
+  deleteProject as deleteProjectRequest,
+  deleteTask as deleteTaskRequest,
+  fetchProjects,
+  updateProject as updateProjectRequest,
+  updateTask as updateTaskRequest,
+} from "../../utils/api";
 
 interface ProjectState {
   projects: Project[];
-  addProject: (title: string, description: string) => void;
-  deleteProject: (projectId: string) => void;
-  addTask: (projectId: string, title: string, status: Task["status"], dueDate: string) => void;
-  updateTask: (projectId: string, taskId: string, title: string, status: Task["status"], dueDate: string) => void;
-  deleteTask: (projectId: string, taskId: string) => void;
+  loadProjects: () => Promise<void>;
+  addProject: (title: string, description: string) => Promise<void>;
+  updateProject: (
+    projectId: string,
+    title: string,
+    description: string,
+  ) => Promise<void>;
+  deleteProject: (projectId: string) => Promise<void>;
+  addTask: (
+    projectId: string,
+    title: string,
+    status: Task["status"],
+    dueDate: string,
+  ) => Promise<void>;
+  updateTask: (
+    projectId: string,
+    taskId: string,
+    title: string,
+    status: Task["status"],
+    dueDate: string,
+  ) => Promise<void>;
+  deleteTask: (projectId: string, taskId: string) => Promise<void>;
 }
 
-const PROJECTS_KEY = "taskforge_projects";
-
 export const useProjectStore = create<ProjectState>((set) => ({
-  projects: loadFromStorage<Project[]>(PROJECTS_KEY, seedProjects),
+  projects: [],
 
-  addProject: (title, description) => {
+  loadProjects: async () => {
+    const projects = await fetchProjects();
+    set({ projects });
+  },
+
+  addProject: async (title, description) => {
+    const newProject = await createProjectRequest({ title, description });
     set((state) => {
-      const newProject: Project = {
-        id: crypto.randomUUID(),
-        title,
-        description,
-        tasks: [],
-      };
-      const updated = [...state.projects, newProject];
-      saveToStorage(PROJECTS_KEY, updated);
-      return { projects: updated };
+      return { projects: [newProject, ...state.projects] };
     });
   },
 
-  deleteProject: (projectId) => {
-    set((state) => {
-      const updated = state.projects.filter((project) => project.id !== projectId);
-      saveToStorage(PROJECTS_KEY, updated);
-      return { projects: updated };
+  updateProject: async (projectId, title, description) => {
+    const updatedProject = await updateProjectRequest(projectId, {
+      title,
+      description,
     });
-  },
-
-  addTask: (projectId, title, status, dueDate) => {
     set((state) => {
-      const updated = state.projects.map((project) => {
+      const projects = state.projects.map((project) => {
         if (project.id !== projectId) return project;
-        const newTask: Task = {
-          id: crypto.randomUUID(),
-          title,
-          status,
-          dueDate,
-        };
+        return updatedProject;
+      });
+      return { projects };
+    });
+  },
+
+  deleteProject: async (projectId) => {
+    await deleteProjectRequest(projectId);
+    set((state) => {
+      const projects = state.projects.filter(
+        (project) => project.id !== projectId,
+      );
+      return { projects };
+    });
+  },
+
+  addTask: async (projectId, title, status, dueDate) => {
+    const newTask = await createTaskRequest(projectId, {
+      title,
+      status,
+      dueDate,
+    });
+    set((state) => {
+      const projects = state.projects.map((project) => {
+        if (project.id !== projectId) return project;
         return { ...project, tasks: [...project.tasks, newTask] };
       });
-      saveToStorage(PROJECTS_KEY, updated);
-      return { projects: updated };
+      return { projects };
     });
   },
 
-  updateTask: (projectId, taskId, title, status, dueDate) => {
+  updateTask: async (projectId, taskId, title, status, dueDate) => {
+    const updatedTask = await updateTaskRequest(taskId, {
+      title,
+      status,
+      dueDate,
+    });
     set((state) => {
-      const updated = state.projects.map((project) => {
+      const projects = state.projects.map((project) => {
         if (project.id !== projectId) return project;
-        const updatedTasks = project.tasks.map((task) => {
+        const tasks = project.tasks.map((task) => {
           if (task.id !== taskId) return task;
-          return { ...task, title, status, dueDate };
+          return updatedTask;
         });
-        return { ...project, tasks: updatedTasks };
+        return { ...project, tasks };
       });
-      saveToStorage(PROJECTS_KEY, updated);
-      return { projects: updated };
+      return { projects };
     });
   },
 
-  deleteTask: (projectId, taskId) => {
+  deleteTask: async (projectId, taskId) => {
+    await deleteTaskRequest(taskId);
     set((state) => {
-      const updated = state.projects.map((project) => {
+      const projects = state.projects.map((project) => {
         if (project.id !== projectId) return project;
         return {
           ...project,
           tasks: project.tasks.filter((task) => task.id !== taskId),
         };
       });
-      saveToStorage(PROJECTS_KEY, updated);
-      return { projects: updated };
+      return { projects };
     });
   },
 }));
