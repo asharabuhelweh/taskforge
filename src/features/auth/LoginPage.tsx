@@ -46,8 +46,8 @@ const LoginPage = () => {
     },
   });
 
-  const onSubmit = (values: LoginFormValues) => {
-    const success = login(values.email, values.password);
+  const onSubmit = async (values: LoginFormValues) => {
+    const success = await login(values.email, values.password);
 
     if (!success) {
       setLoginError("Invalid email or password");
